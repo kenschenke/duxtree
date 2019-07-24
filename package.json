@@ -1,0 +1,45 @@
+{
+  "name": "duxtree",
+  "version": "1.0.0",
+  "description": "ReactJS tree component with custom rendering and dynamic loading",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "testbed": "./node_modules/.bin/webpack-dev-server --env=testbed",
+    "website": "./node_modules/.bin/webpack-dev-server --env=website",
+    "website-dist": "./node_modules/.bin/webpack --env=website-dist",
+    "prepare": "npm run website-dist && babel ./src --out-dir ./lib --source-maps --presets env,stage-0,react --plugins babel-plugin-add-module-exports"
+  },
+  "author": "Ken Schenke",
+  "license": "MIT",
+  "peerDependencies": {
+    "lodash": "^4.17.14",
+    "uniqid": "^5.0.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.8.0",
+    "babel-loader": "^8.0.6",
+    "copy-webpack-plugin": "^5.0.3",
+    "css-loader": "^3.0.0",
+    "jest": "^24.8.0",
+    "lodash": "^4.17.14",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
+    "redux": "^4.0.4",
+    "redux-devtools": "^3.5.0",
+    "redux-devtools-dock-monitor": "^1.1.3",
+    "redux-devtools-log-monitor": "^1.4.0",
+    "redux-thunk": "^2.3.0",
+    "style-loader": "^0.23.1",
+    "uniqid": "^5.0.3",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.7.2"
+  }
+}

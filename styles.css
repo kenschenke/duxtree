@@ -1,0 +1,16 @@
+.duxtree {
+    margin-left: 25px;
+}
+
+.duxtree-node {
+
+}
+
+.duxtree-node-children {
+    margin-left: 25px;
+}
+
+.duxtree-disclosure {
+    margin-right: 5px;
+    cursor: default;
+}
