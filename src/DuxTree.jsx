@@ -2,70 +2,46 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { mapDuxTreeProps, mapDuxTreeDispatch } from './DuxTree.map';
-import uniqid from 'uniqid';
 import DuxTreeNode from './DuxTreeNode';
-
-/**
- * Data structure:
- *
- * [
- *     {
- *         label: 'Item label' | () | <element>,
- *         key: string | number,
- *         checkable: true | false,
- *         defaultChecked: true | false,
- *         defaultExpanded: true | false,
- *         icon: 'predefined' | () | <element>,
- *         children: [] | undefined,   // empty array means lazy loading, undefined means leaf node
- *         onExpanded: (),
- *         onChecked: (),
- *         onRender: (),
- *         loadingMsg: 'Loading...',
- *     },
- *     ...
- * ]
- *
- * State data structure
- *
- *
- */
-
-/**
- *
- * The issue:
- *
- * DuxTree is not getting re-rendered when expandedNodes is updated.  This is because
- * Redux does a shallow comparison of the object properties and changes to the expandedNodes
- * object are not enough to trigger a re-render.
- *
- * How to fix this:
- *
- * DuxTree needs to create DuxTreeNode objects and let the Redux map pass in isExpanded into
- * each component.  That should be enough to trigger re-renders.
- *
- */
 
 class DuxTreeUi extends React.Component {
     componentDidMount() {
-        this.props.init(this.props.name, this.props.data);
+        this.props.updateTree(this.props.name, this.props.data);
+    }
+
+    componentDidUpdate(prevProps) {
+        this.props.updateTree(this.props.name, this.props.data);
     }
 
     renderChildren = children => {
         return children.map(child => {
-            const id = child.hasOwnProperty('id') ? child.id : uniqid();
+            if (!child.hasOwnProperty('id')) {
+                console.error('DuxTree: all tree nodes must have an id');
+            }
+            if (!child.hasOwnProperty('label')) {
+                console.error('DuxTree: all tree nodes must have a label');
+            }
 
-            const hasChildren = child.hasOwnProperty('children');
             let childNodes;
-            if (hasChildren) {
+            if (child.hasOwnProperty('children')) {
                 childNodes = this.renderChildren(child.children);
             }
 
+            let loadingMsg = 'Loading...';
+            if (child.hasOwnProperty('loadingMsg')) {
+                loadingMsg = child.loadingMsg;
+            }
+
+            const defaultExpanded = child.hasOwnProperty('defaultExpanded') ? child.defaultExpanded : false;
+
             return (
                 <DuxTreeNode
-                    key={id}
-                    id={id}
+                    key={child.id}
+                    id={child.id}
                     label={child.label}
                     treeName={this.props.name}
+                    defaultExpanded={defaultExpanded}
+                    loadingMsg={loadingMsg}
                 >
                     {childNodes}
                 </DuxTreeNode>
@@ -76,7 +52,7 @@ class DuxTreeUi extends React.Component {
     render() {
         return (
             <div className="duxtree">
-                {this.renderChildren(this.props.data, '__duxtree_root')}
+                {this.renderChildren(this.props.data)}
             </div>
         );
     }
@@ -86,7 +62,7 @@ DuxTreeUi.propTypes = {
     name: PropTypes.string.isRequired,
     data: PropTypes.array.isRequired,
 
-    init: PropTypes.func.isRequired
+    updateTree: PropTypes.func.isRequired,
 };
 
 export default connect(mapDuxTreeProps, mapDuxTreeDispatch)(DuxTreeUi);

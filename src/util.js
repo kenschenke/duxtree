@@ -12,20 +12,19 @@
 
 
 export const getNodeCheckedState = (state, treeName, id) => {
-    const checked = getTreeStateData(state, treeName, 'checked', {});
-    const family = getTreeStateData(state, treeName, 'family', {});
-    if (!checked.hasOwnProperty(id)) {
+    const nodes = getTreeStateData(state, treeName, 'nodes', {});
+    if (!nodes.hasOwnProperty(id)) {
         return 'none';
     }
-    if (!family.hasOwnProperty(id) || !family[id].children.length) {
-        return checked[id] ? 'full' : 'none';
+    if (!nodes[id].children.length) {
+        return nodes[id].isChecked ? 'full' : 'none';
     }
 
     // The node has children.  Check the state of each of the children.
     let allFull = true;
     let allNone = true;
-    for (let i = 0; i < family[id].children.length; i++) {
-        const childState = getNodeCheckedState(state, treeName, family[id].children[i]);
+    for (let i = 0; i < nodes[id].children.length; i++) {
+        const childState = getNodeCheckedState(state, treeName, nodes[id].children[i]);
         if (childState !== 'full') {
             allFull = false;
         }
@@ -59,86 +58,84 @@ export const getTreeStateData = (state, treeName, field, defaultValue) => {
     return state.duxtree[treeName][field];
 };
 
-export const isNodeChecked = (state, treeName, id) => {
-    const checked = getTreeStateData(state, treeName, 'checked', {});
-    if (checked.hasOwnProperty(id)) {
-        return checked[id];
-    }
-
-    return false;
-};
-
 export const isNodeExpanded = (state, treeName, id, defaultValue) => {
-    const expandedNodes = getTreeStateData(state, treeName, 'expandedNodes', {});
-    if (expandedNodes.hasOwnProperty(id)) {
-        return expandedNodes[id];
+    const nodes = getTreeStateData(state, treeName, 'nodes', {});
+    if (nodes.hasOwnProperty(id)) {
+        return nodes[id].isExpanded;
     }
 
     return defaultValue;
 };
 
-export const setDefaultCheckStateForChildren = (checked, children) => {
-    for (let i = 0; i < children.length; i++) {
-        let isChecked = false;
-        if (children[i].hasOwnProperty('defaultChecked') && children[i].defaultChecked) {
-            isChecked = true;
-        }
+export const isNodeLoading = (state, treeName, id) => {
+    const nodes = getTreeStateData(state, treeName, 'nodes', {});
+    if (nodes.hasOwnProperty(id)) {
+        return nodes[id].isLoading;
+    }
 
-        checked[children[i].id] = isChecked;
+    return false;
+};
 
-        if (children[i].hasOwnProperty('children')) {
-            setDefaultCheckStateForChildren(checked, children[i].children);
-        }
+export const setNodeCheckState = (nodes, id, value) => {
+    nodes[id].isChecked = value;
+
+    for (let i = 0; i < nodes[id].children.length; i++) {
+        setNodeCheckState(nodes, nodes[id].children[i], value);
     }
 };
 
-export const setDefaultExpandedForChildren = (expandedNodes, children) => {
+export const updateTreeDataForChildren = (nodes, children, parentId) => {
     for (let i = 0; i < children.length; i++) {
-        let defaultExpanded = false;
-        if (children[i].hasOwnProperty('defaultExpanded') && children[i].defaultExpanded) {
-            defaultExpanded = true;
+        if (!children[i].hasOwnProperty('id')) {
+            console.error('DuxTree: all nodes must have an id');
+            continue;
         }
 
-        expandedNodes[children[i].id] = defaultExpanded;
-
-        if (children[i].hasOwnProperty('children')) {
-            setDefaultExpandedForChildren(expandedNodes, children[i].children);
-        }
-    }
-};
-
-export const setNodeCheckState = (checked, family, id, value) => {
-    checked[id] = value;
-    if (!family.hasOwnProperty(id)) {
-        return;
-    }
-
-    for (let i = 0; i < family[id].children.length; i++) {
-        setNodeCheckState(checked, family, family[id].children[i], value);
-    }
-};
-
-export const setNodeFamiliesForChildren = (family, children, parentId) => {
-    for (let i = 0; i < children.length; i++) {
         const id = children[i].id;
-        if (!family.hasOwnProperty(id)) {
-            family[id] = {
-                parentId,
-                children: []
+
+        if (!nodes.hasOwnProperty(id)) {
+            let isChecked = false;
+            if (children[i].hasOwnProperty('defaultChecked') && children[i].defaultChecked) {
+                isChecked = true;
             }
+
+            let isExpanded = false;
+            if (children[i].hasOwnProperty('defaultExpanded') && children[i].defaultExpanded) {
+                isExpanded = true;
+            }
+
+            nodes[id] = {
+                parentId,
+                children: [],
+                isChecked,
+                isExpanded,
+                isLoading: false
+            };
+
+            if (!nodes.hasOwnProperty(parentId)) {
+                nodes[parentId] = { children: [] };
+            }
+            nodes[parentId].children.push(id);
         } else {
-            family[id].parentId = parentId;
+            if (nodes[id].parentId !== parentId) {
+                // The node was re-parented.  Remove it from the children of the old parent
+                // and add it to the children of the new parent.
+                const oldParentId = nodes[id].parentId;
+                const index = nodes[oldParentId].children.indexOf(id);
+                if (index !== -1) {
+                    nodes[oldParentId].children.splice(index, 1);
+                }
+                nodes[parentId].children.push(id);
+                nodes[id].parentId = parentId;
+            }
         }
 
-        if (!family.hasOwnProperty(parentId)) {
-            family[parentId] = {
-                children: []
-            }
-        }
-        family[parentId].children.push(id);
+        nodes[id].onExpand = children[i].onExpand;
+        nodes[id].onCollapse = children[i].onCollapse;
 
         if (children[i].hasOwnProperty('children')) {
-            setNodeFamiliesForChildren(family, children[i].children, id);
+            updateTreeDataForChildren(nodes, children[i].children, id);
         }
     }
 };
+

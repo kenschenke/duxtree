@@ -1,4 +1,4 @@
-import { initializeTreeData } from './actions';
+import { updateTreeData } from './actions';
 
 export const mapDuxTreeProps = (state, props) => {
     return {
@@ -8,8 +8,8 @@ export const mapDuxTreeProps = (state, props) => {
 
 export const mapDuxTreeDispatch = dispatch => {
     return {
-        init(treeName, data) {
-            dispatch(initializeTreeData(treeName, data));
+        updateTree(treeName, data) {
+            dispatch(updateTreeData(treeName, data));
         }
     };
 };

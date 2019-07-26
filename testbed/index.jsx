@@ -6,6 +6,7 @@ import storeFactory from './store';
 import { App } from './components/App.jsx';
 
 const store = storeFactory(initialState);
+window.store = store;
 
 import '../styles.css';
 

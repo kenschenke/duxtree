@@ -1,10 +1,11 @@
 import { toggleNodeChecked, toggleNodeExpanded } from './actions';
-import { getNodeCheckedState, isNodeExpanded } from './util';
+import { getNodeCheckedState, isNodeExpanded, isNodeLoading } from './util';
 
 export const mapDuxTreeNodeProps = (state, props) => {
     return {
         checkedState: getNodeCheckedState(state, props.treeName, props.id),
-        isExpanded: isNodeExpanded(state, props.treeName, props.id, props.defaultExpanded)
+        isExpanded: isNodeExpanded(state, props.treeName, props.id, props.defaultExpanded),
+        isLoading: isNodeLoading(state, props.treeName, props.id)
     };
 };
 

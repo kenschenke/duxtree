@@ -24,7 +24,7 @@ class DuxTreeNodeUi extends React.Component {
                 }
                 <span onClick={() => this.props.checkClicked(this.props.treeName, this.props.id)}>{checkedIndicator}</span>
                 &nbsp;
-                {this.props.label}
+                {this.props.isLoading ? this.props.loadingMsg : this.props.label}
                 <div className="duxtree-node-children">
                     {this.props.isExpanded && this.props.children}
                 </div>
@@ -39,9 +39,16 @@ DuxTreeNodeUi.propTypes = {
     treeName: PropTypes.string.isRequired,
     checkedState: PropTypes.string.isRequired,
     isExpanded: PropTypes.bool.isRequired,
+    defaultExpanded: PropTypes.bool,
+    loadingMsg: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
 
     checkClicked: PropTypes.func.isRequired,
-    expandClicked: PropTypes.func.isRequired
+    expandClicked: PropTypes.func.isRequired,
+
+    // callbacks
+    onExpand: PropTypes.func,
+    onCollapse: PropTypes.func,
 };
 
 export default connect(mapDuxTreeNodeProps, mapDuxTreeNodeDispatch)(DuxTreeNodeUi);
