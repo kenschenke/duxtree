@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { mapDuxTreeNodeProps, mapDuxTreeNodeDispatch } from './DuxTreeNode.map';
 
-class DuxTreeNodeUi extends React.Component {
+export default class DuxTreeNode extends React.Component {
     render() {
         const hasChildren = this.props.children !== undefined;
         const expanderLabel = this.props.isExpanded ? '-' : '+';
@@ -20,9 +18,9 @@ class DuxTreeNodeUi extends React.Component {
         return (
             <div className="duxtree-node">
                 { hasChildren &&
-                <span onClick={() => this.props.expandClicked(this.props.treeName, this.props.id)} className="duxtree-disclosure">{expanderLabel}</span>
+                <span onClick={() => this.props.expandClicked(this.props.id)} className="duxtree-disclosure">{expanderLabel}</span>
                 }
-                <span onClick={() => this.props.checkClicked(this.props.treeName, this.props.id)}>{checkedIndicator}</span>
+                <span onClick={() => this.props.checkClicked(this.props.id)}>{checkedIndicator}</span>
                 &nbsp;
                 {this.props.isLoading ? this.props.loadingMsg : this.props.label}
                 <div className="duxtree-node-children">
@@ -33,10 +31,9 @@ class DuxTreeNodeUi extends React.Component {
     }
 }
 
-DuxTreeNodeUi.propTypes = {
+DuxTreeNode.propTypes = {
     id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     label: PropTypes.string.isRequired,
-    treeName: PropTypes.string.isRequired,
     checkedState: PropTypes.string.isRequired,
     isExpanded: PropTypes.bool.isRequired,
     defaultExpanded: PropTypes.bool,
@@ -50,5 +47,3 @@ DuxTreeNodeUi.propTypes = {
     onExpand: PropTypes.func,
     onCollapse: PropTypes.func,
 };
-
-export default connect(mapDuxTreeNodeProps, mapDuxTreeNodeDispatch)(DuxTreeNodeUi);

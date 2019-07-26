@@ -1,16 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { mapDuxTreeProps, mapDuxTreeDispatch } from './DuxTree.map';
 import DuxTreeNode from './DuxTreeNode';
+import { getNodeCheckedState, isNodeExpanded, isNodeLoading, setNodeCheckState, updateTreeDataForChildren } from './util';
+import _ from 'lodash';
 
-class DuxTreeUi extends React.Component {
+export default class DuxTree extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { nodes: {} };
+    }
+
     componentDidMount() {
-        this.props.updateTree(this.props.name, this.props.data);
+        this.updateTreeData();
     }
 
     componentDidUpdate(prevProps) {
-        this.props.updateTree(this.props.name, this.props.data);
+        this.updateTreeData();
     }
 
     renderChildren = children => {
@@ -39,9 +45,13 @@ class DuxTreeUi extends React.Component {
                     key={child.id}
                     id={child.id}
                     label={child.label}
-                    treeName={this.props.name}
+                    checkedState={getNodeCheckedState(this.state.nodes, child.id)}
+                    isExpanded={isNodeExpanded(this.state.nodes, child.id, defaultExpanded)}
+                    isLoading={isNodeLoading(this.state.nodes, child.id)}
                     defaultExpanded={defaultExpanded}
                     loadingMsg={loadingMsg}
+                    checkClicked={() => this.toggleNodeChecked(child.id)}
+                    expandClicked={() => this.toggleNodeExpanded(child.id)}
                 >
                     {childNodes}
                 </DuxTreeNode>
@@ -56,13 +66,50 @@ class DuxTreeUi extends React.Component {
             </div>
         );
     }
+
+    toggleNodeChecked = id => {
+        const nodes = _.cloneDeep(this.state.nodes);
+
+        if (!nodes.hasOwnProperty(id) || !nodes.hasOwnProperty(nodes[id].parentId)) {
+            console.error(`DuxTree: ${id} not found in node data`);
+            return;  // nothing to do
+        }
+
+        if (nodes[id].children.length) {
+            // The node has children.  Get the node's check state (full, partial, or none)
+            const checkedState = getNodeCheckedState(nodes, id);
+            if (checkedState === 'full') {
+                // Uncheck this node and all descendants
+                setNodeCheckState(nodes, id, false);
+            } else {
+                // Check this node and all descendants
+                setNodeCheckState(nodes, id, true);
+            }
+        } else {
+            nodes[id].isChecked = !nodes[id].isChecked;
+        }
+
+        this.setState({ nodes });
+    };
+
+    toggleNodeExpanded = id => {
+        const nodes = _.cloneDeep(this.state.nodes);
+
+        nodes[id].isExpanded = !nodes[id].isExpanded;
+
+        this.setState({ nodes });
+    };
+
+    updateTreeData = () => {
+        const nodes = _.cloneDeep(this.state.nodes);
+
+        const didUpdate = updateTreeDataForChildren(nodes, this.props.data, '__duxtree_root');
+        if (didUpdate) {
+            this.setState({ nodes });
+        }
+    };
 }
 
-DuxTreeUi.propTypes = {
-    name: PropTypes.string.isRequired,
+DuxTree.propTypes = {
     data: PropTypes.array.isRequired,
-
-    updateTree: PropTypes.func.isRequired,
 };
-
-export default connect(mapDuxTreeProps, mapDuxTreeDispatch)(DuxTreeUi);

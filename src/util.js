@@ -5,14 +5,12 @@
  *    'partial' - some of the nodes children (but not all) are checked
  *    'none' - this node is not checked and none of its children are checked
  *
- * @param state
- * @param treeName
+ * @param nodes
  * @param id
  */
 
 
-export const getNodeCheckedState = (state, treeName, id) => {
-    const nodes = getTreeStateData(state, treeName, 'nodes', {});
+export const getNodeCheckedState = (nodes, id) => {
     if (!nodes.hasOwnProperty(id)) {
         return 'none';
     }
@@ -24,7 +22,7 @@ export const getNodeCheckedState = (state, treeName, id) => {
     let allFull = true;
     let allNone = true;
     for (let i = 0; i < nodes[id].children.length; i++) {
-        const childState = getNodeCheckedState(state, treeName, nodes[id].children[i]);
+        const childState = getNodeCheckedState(nodes, nodes[id].children[i]);
         if (childState !== 'full') {
             allFull = false;
         }
@@ -42,24 +40,7 @@ export const getNodeCheckedState = (state, treeName, id) => {
     }
 };
 
-export const getTreeStateData = (state, treeName, field, defaultValue) => {
-    if (!state.hasOwnProperty('duxtree')) {
-        return defaultValue;
-    }
-
-    if (!state.duxtree.hasOwnProperty(treeName)) {
-        return defaultValue;
-    }
-
-    if (!state.duxtree[treeName].hasOwnProperty(field)) {
-        return defaultValue;
-    }
-
-    return state.duxtree[treeName][field];
-};
-
-export const isNodeExpanded = (state, treeName, id, defaultValue) => {
-    const nodes = getTreeStateData(state, treeName, 'nodes', {});
+export const isNodeExpanded = (nodes, id, defaultValue) => {
     if (nodes.hasOwnProperty(id)) {
         return nodes[id].isExpanded;
     }
@@ -67,8 +48,7 @@ export const isNodeExpanded = (state, treeName, id, defaultValue) => {
     return defaultValue;
 };
 
-export const isNodeLoading = (state, treeName, id) => {
-    const nodes = getTreeStateData(state, treeName, 'nodes', {});
+export const isNodeLoading = (nodes, id) => {
     if (nodes.hasOwnProperty(id)) {
         return nodes[id].isLoading;
     }
@@ -85,6 +65,8 @@ export const setNodeCheckState = (nodes, id, value) => {
 };
 
 export const updateTreeDataForChildren = (nodes, children, parentId) => {
+    let didUpdate = false;
+
     for (let i = 0; i < children.length; i++) {
         if (!children[i].hasOwnProperty('id')) {
             console.error('DuxTree: all nodes must have an id');
@@ -116,6 +98,7 @@ export const updateTreeDataForChildren = (nodes, children, parentId) => {
                 nodes[parentId] = { children: [] };
             }
             nodes[parentId].children.push(id);
+            didUpdate = true;
         } else {
             if (nodes[id].parentId !== parentId) {
                 // The node was re-parented.  Remove it from the children of the old parent
@@ -127,15 +110,27 @@ export const updateTreeDataForChildren = (nodes, children, parentId) => {
                 }
                 nodes[parentId].children.push(id);
                 nodes[id].parentId = parentId;
+                didUpdate = true;
             }
         }
 
-        nodes[id].onExpand = children[i].onExpand;
-        nodes[id].onCollapse = children[i].onCollapse;
+        if (nodes[id].onExpand !== children[i].onExpand) {
+            didUpdate = true;
+            nodes[id].onExpand = children[i].onExpand;
+        }
+
+        if (nodes[id].onCollapse !== children[i].onCollapse) {
+            didUpdate = true;
+            nodes[id].onCollapse = children[i].onCollapse;
+        }
 
         if (children[i].hasOwnProperty('children')) {
-            updateTreeDataForChildren(nodes, children[i].children, id);
+            if (updateTreeDataForChildren(nodes, children[i].children, id)) {
+                didUpdate = true;
+            }
         }
     }
+
+    return didUpdate;
 };
 

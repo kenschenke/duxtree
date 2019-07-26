@@ -1,7 +1,5 @@
 import React from 'react';
 import DuxTree from '../../src/DuxTree';
-import DevTools from './DevTools';
-import { setNodeIsLoading } from '../../src/actions';
 import _ from 'lodash';
 
 export class App extends React.Component {
@@ -69,29 +67,23 @@ export class App extends React.Component {
     }
 
     buttonClicked = () => {
-        window.store.dispatch(setNodeIsLoading('myTree', 'item5', true));
+        const treeData = _.cloneDeep(this.state.treeData);
 
-        setTimeout(() => {
-            const treeData = _.cloneDeep(this.state.treeData);
+        treeData.push({
+            id: 'item7',
+            label: 'Item 7',
+            defaultChecked: true
+        });
 
-            treeData.push({
-                id: 'item7',
-                label: 'Item 7',
-                defaultChecked: true
-            });
-
-            window.store.dispatch(setNodeIsLoading('myTree', 'item5', false));
-            this.setState({ treeData });
-        }, 3000);
+        this.setState({ treeData });
     };
 
     render() {
         return (
             <div>
                 <h1>Hello World</h1>
-                <DuxTree name="myTree" data={this.state.treeData}/>
+                <DuxTree data={this.state.treeData}/>
                 <button className="btn btn-secondary" onClick={this.buttonClicked}>Click Me</button>
-                <DevTools/>
             </div>
         );
     }
