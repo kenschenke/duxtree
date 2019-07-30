@@ -38,6 +38,16 @@ export default class DuxTree extends React.Component {
                 loadingMsg = child.loadingMsg;
             }
 
+            let onExpand = this.props.onExpand;
+            if (child.hasOwnProperty('onExpand')) {
+                onExpand = child.onExpand;
+            }
+
+            let onCollapse = this.props.onCollapse;
+            if (child.hasOwnProperty('onCollapse')) {
+                onCollapse = child.onCollapse;
+            }
+
             const defaultExpanded = child.hasOwnProperty('defaultExpanded') ? child.defaultExpanded : false;
 
             return (
@@ -52,6 +62,13 @@ export default class DuxTree extends React.Component {
                     loadingMsg={loadingMsg}
                     checkClicked={() => this.toggleNodeChecked(child.id)}
                     expandClicked={() => this.toggleNodeExpanded(child.id)}
+                    checkboxUnchecked={this.props.checkboxUnchecked}
+                    checkboxIndeterminate={this.props.checkboxIndeterminate}
+                    checkboxChecked={this.props.checkboxChecked}
+                    disclosureExpand={this.props.disclosureExpand}
+                    disclosureCollapse={this.props.disclosureCollapse}
+                    onExpand={onExpand}
+                    onCollapse={onCollapse}
                 >
                     {childNodes}
                 </DuxTreeNode>
@@ -90,6 +107,17 @@ export default class DuxTree extends React.Component {
         }
 
         this.setState({ nodes });
+        if (this.props.onSelectionChanged) {
+            const selected = [];
+            for (let id in nodes) {
+                if (nodes.hasOwnProperty(id) &&
+                    (!nodes[id].hasOwnProperty('children') || nodes[id].children.length === 0) &&
+                    nodes[id].isChecked) {
+                    selected.push(id);
+                }
+            }
+            this.props.onSelectionChanged(selected);
+        }
     };
 
     toggleNodeExpanded = id => {
@@ -112,4 +140,19 @@ export default class DuxTree extends React.Component {
 
 DuxTree.propTypes = {
     data: PropTypes.array.isRequired,
+
+    // customize checkboxes
+    checkboxUnchecked: PropTypes.node,
+    checkboxChecked: PropTypes.node,
+    checkboxIndeterminate: PropTypes.node,
+
+    // customize disclosures
+    disclosureExpand: PropTypes.node,
+    disclosureCollapse: PropTypes.node,
+
+    // callbacks
+    onExpand: PropTypes.func,
+    onCollapse: PropTypes.func,
+    onSelectionChanged: PropTypes.func,
+
 };

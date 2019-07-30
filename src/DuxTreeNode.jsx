@@ -2,25 +2,68 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default class DuxTreeNode extends React.Component {
+    expandClicked = id => {
+        this.props.expandClicked(id);
+        if (this.props.isExpanded) {
+            if (this.props.onExpand) {
+                this.props.onExpand(id);
+            }
+        } else {
+            if (this.props.onCollapse) {
+                this.props.onCollapse(id);
+            }
+        }
+    };
+
     render() {
         const hasChildren = this.props.children !== undefined;
-        const expanderLabel = this.props.isExpanded ? '-' : '+';
-        let checkedIndicator = '';
+        let checkedComponent = '';
 
         if (this.props.checkedState === 'full') {
-            checkedIndicator = 'X';
+            if (this.props.checkboxChecked) {
+                checkedComponent = this.props.checkboxChecked;
+            } else {
+                checkedComponent = <input type="checkbox" readOnly={true} checked={true} ref={el => el && (el.indeterminate = false)}/>;
+            }
         } else if (this.props.checkedState === 'partial') {
-            checkedIndicator = '/';
+            if (this.props.checkboxIndeterminate) {
+                checkedComponent = this.props.checkboxIndeterminate;
+            } else {
+                checkedComponent = <input type="checkbox" readOnly={true} checked={true} ref={el => el && (el.indeterminate = true)}/>;
+            }
         } else if (this.props.checkedState === 'none') {
-            checkedIndicator = 'O';
+            if (this.props.checkboxUnchecked) {
+                checkedComponent = this.props.checkboxUnchecked;
+            } else {
+                checkedComponent = <input type="checkbox" readOnly={true} checked={false} ref={el => el && (el.indeterminate = false)}/>;
+            }
+        }
+
+        let disclosure;
+        if (hasChildren) {
+            if (this.props.isExpanded) {
+                if (this.props.disclosureCollapse) {
+                    disclosure = this.props.disclosureCollapse;
+                } else {
+                    disclosure = <span>-</span>;
+                }
+            } else {
+                if (this.props.disclosureExpand) {
+                    disclosure = this.props.disclosureExpand;
+                } else {
+                    disclosure = <span>+</span>;
+                }
+            }
         }
 
         return (
             <div className="duxtree-node">
                 { hasChildren &&
-                <span onClick={() => this.props.expandClicked(this.props.id)} className="duxtree-disclosure">{expanderLabel}</span>
+                <div onClick={() => this.expandClicked(this.props.id)} className="duxtree-disclosure">{disclosure}</div>
                 }
-                <span onClick={() => this.props.checkClicked(this.props.id)}>{checkedIndicator}</span>
+                <div onClick={() => this.props.checkClicked(this.props.id)} className="duxtree-checkbox">
+                    {checkedComponent}
+                </div>
                 &nbsp;
                 {this.props.isLoading ? this.props.loadingMsg : this.props.label}
                 <div className="duxtree-node-children">
@@ -39,6 +82,13 @@ DuxTreeNode.propTypes = {
     defaultExpanded: PropTypes.bool,
     loadingMsg: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
+
+    checkboxUnchecked: PropTypes.node,
+    checkboxChecked: PropTypes.node,
+    checkboxIndeterminate: PropTypes.node,
+
+    disclosureExpand: PropTypes.node,
+    disclosureCollapse: PropTypes.node,
 
     checkClicked: PropTypes.func.isRequired,
     expandClicked: PropTypes.func.isRequired,

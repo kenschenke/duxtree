@@ -79,10 +79,13 @@ export class App extends React.Component {
     };
 
     render() {
+        const check = <span>Q</span>;
         return (
             <div>
                 <h1>Hello World</h1>
-                <DuxTree data={this.state.treeData}/>
+                <DuxTree
+                    data={this.state.treeData}
+                />
                 <button className="btn btn-secondary" onClick={this.buttonClicked}>Click Me</button>
             </div>
         );

@@ -7,10 +7,20 @@
 }
 
 .duxtree-node-children {
-    margin-left: 25px;
+    margin-left: 35px;
 }
 
 .duxtree-disclosure {
     margin-right: 5px;
     cursor: default;
+    width: 1.5ch;
+    display: inline-block;
+    text-align: center;
 }
+
+.duxtree-checkbox {
+    width: 1.5ch;
+    display: inline-block;
+    text-align: center;
+}
+
