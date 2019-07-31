@@ -63,6 +63,12 @@ export class App extends React.Component {
                     ]
                 },
                 {
+                    id: 'folder3',
+                    label: 'Folder 3',
+                    icon: <i className="material-icons-outlined">folder</i>,
+                    onLoadChildren: this.loadFolder3Children
+                },
+                {
                     id: 'item5',
                     label: 'Item 5',
                     checkable: false
@@ -81,6 +87,28 @@ export class App extends React.Component {
         });
 
         this.setState({ treeData });
+    };
+
+    loadFolder3Children = () => {
+        const treeData = _.cloneDeep(this.state.treeData);
+        treeData[2].isLoading = true;
+        this.setState({ treeData });
+
+        setTimeout(() => {
+            treeData[2].isLoading = false;
+            treeData[2].children = [
+                {
+                    id: 'item31',
+                    label: 'Item 31'
+                },
+                {
+                    id: 'item32',
+                    label: 'Item 32'
+                }
+            ];
+
+            this.setState({ treeData });
+        }, 3000);
     };
 
     render() {

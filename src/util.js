@@ -48,14 +48,6 @@ export const isNodeExpanded = (nodes, id, defaultValue) => {
     return defaultValue;
 };
 
-export const isNodeLoading = (nodes, id) => {
-    if (nodes.hasOwnProperty(id)) {
-        return nodes[id].isLoading;
-    }
-
-    return false;
-};
-
 export const setNodeCheckState = (nodes, id, value) => {
     nodes[id].isChecked = value;
 
@@ -91,7 +83,6 @@ export const updateTreeDataForChildren = (nodes, children, parentId) => {
                 children: [],
                 isChecked,
                 isExpanded,
-                isLoading: false
             };
 
             if (!nodes.hasOwnProperty(parentId)) {

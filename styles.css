@@ -42,3 +42,9 @@
     cursor: default;
 }
 
+.duxtree-loadingmsg {
+    display: inline-block;
+    margin-left: 3ch;
+    cursor: default;
+}
+

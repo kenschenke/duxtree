@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DuxTreeNode from './DuxTreeNode';
-import { getNodeCheckedState, isNodeExpanded, isNodeLoading, setNodeCheckState, updateTreeDataForChildren } from './util';
+import { getNodeCheckedState, isNodeExpanded, setNodeCheckState, updateTreeDataForChildren } from './util';
 import _ from 'lodash';
 
 export default class DuxTree extends React.Component {
@@ -38,6 +38,11 @@ export default class DuxTree extends React.Component {
                 loadingMsg = child.loadingMsg;
             }
 
+            let isLoading = false;
+            if (child.hasOwnProperty('isLoading')) {
+                isLoading = child.isLoading;
+            }
+
             let onExpand = this.props.onExpand;
             if (child.hasOwnProperty('onExpand')) {
                 onExpand = child.onExpand;
@@ -46,6 +51,11 @@ export default class DuxTree extends React.Component {
             let onCollapse = this.props.onCollapse;
             if (child.hasOwnProperty('onCollapse')) {
                 onCollapse = child.onCollapse;
+            }
+
+            let onLoadChildren = this.props.onLoadChildren;
+            if (child.hasOwnProperty('onLoadChildren')) {
+                onLoadChildren = child.onLoadChildren;
             }
 
             let checkable = this.props.checkable;
@@ -62,7 +72,7 @@ export default class DuxTree extends React.Component {
                     label={child.label}
                     checkedState={getNodeCheckedState(this.state.nodes, child.id)}
                     isExpanded={isNodeExpanded(this.state.nodes, child.id, defaultExpanded)}
-                    isLoading={isNodeLoading(this.state.nodes, child.id)}
+                    isLoading={isLoading}
                     defaultExpanded={defaultExpanded}
                     loadingMsg={loadingMsg}
                     checkable={checkable}
@@ -76,6 +86,7 @@ export default class DuxTree extends React.Component {
                     disclosureCollapse={this.props.disclosureCollapse}
                     onExpand={onExpand}
                     onCollapse={onCollapse}
+                    onLoadChildren={onLoadChildren}
                 >
                     {childNodes}
                 </DuxTreeNode>
@@ -162,6 +173,7 @@ DuxTree.propTypes = {
     onExpand: PropTypes.func,
     onCollapse: PropTypes.func,
     onSelectionChanged: PropTypes.func,
+    onLoadChildren: PropTypes.func,
 
 };
 

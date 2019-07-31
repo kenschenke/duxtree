@@ -5,12 +5,15 @@ export default class DuxTreeNode extends React.Component {
     expandClicked = () => {
         this.props.expandClicked(this.props.id);
         if (this.props.isExpanded) {
+            if (this.props.onCollapse) {
+                this.props.onCollapse(this.props.id);
+            }
+        } else {
             if (this.props.onExpand) {
                 this.props.onExpand(this.props.id);
             }
-        } else {
-            if (this.props.onCollapse) {
-                this.props.onCollapse(this.props.id);
+            if (this.props.onLoadChildren) {
+                this.props.onLoadChildren(this.props.id);
             }
         }
     };
@@ -48,7 +51,7 @@ export default class DuxTreeNode extends React.Component {
         }
 
         let disclosure;
-        if (hasChildren) {
+        if (hasChildren || this.props.onLoadChildren) {
             if (this.props.isExpanded) {
                 if (this.props.disclosureCollapse) {
                     disclosure = this.props.disclosureCollapse;
@@ -70,10 +73,10 @@ export default class DuxTreeNode extends React.Component {
 
         return (
             <div className="duxtree-node">
-                { !hasChildren &&
+                { !hasChildren && this.props.onLoadChildren === undefined &&
                 <div className="duxtree-disclosure">&nbsp;</div>
                 }
-                { hasChildren &&
+                { (hasChildren || this.props.onLoadChildren) &&
                 <div onClick={this.expandClicked} className="duxtree-disclosure">{disclosure}</div>
                 }
                 { this.props.checkable &&
@@ -85,11 +88,18 @@ export default class DuxTreeNode extends React.Component {
                 <div className="duxtree-icon" onClick={this.onClick}>{this.props.icon}</div>
                 }
                 <div className="duxtree-label" onClick={this.onClick}>
-                    {this.props.isLoading ? this.props.loadingMsg : label}
+                    {label}
                 </div>
+                { this.props.isLoading &&
+                <div className="duxtree-node-children">
+                    <div className="duxtree-loadingmsg">{this.props.loadingMsg}</div>
+                </div>
+                }
+                { !this.props.isLoading &&
                 <div className="duxtree-node-children">
                     {this.props.isExpanded && this.props.children}
                 </div>
+                }
             </div>
         );
     }
@@ -120,4 +130,5 @@ DuxTreeNode.propTypes = {
     // callbacks
     onExpand: PropTypes.func,
     onCollapse: PropTypes.func,
+    onLoadChildren: PropTypes.func,
 };
