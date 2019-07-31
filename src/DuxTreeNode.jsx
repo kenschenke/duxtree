@@ -2,16 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default class DuxTreeNode extends React.Component {
-    expandClicked = id => {
-        this.props.expandClicked(id);
+    expandClicked = () => {
+        this.props.expandClicked(this.props.id);
         if (this.props.isExpanded) {
             if (this.props.onExpand) {
-                this.props.onExpand(id);
+                this.props.onExpand(this.props.id);
             }
         } else {
             if (this.props.onCollapse) {
-                this.props.onCollapse(id);
+                this.props.onCollapse(this.props.id);
             }
+        }
+    };
+
+    onClick = () => {
+        if (this.props.children) {
+            this.expandClicked();
+        } else if (this.props.checkable) {
+            this.props.checkClicked(this.props.id);
         }
     };
 
@@ -56,16 +64,29 @@ export default class DuxTreeNode extends React.Component {
             }
         }
 
+        const label = typeof this.props.label === 'function'
+            ? this.props.label(this.props.id)
+            : this.props.label;
+
         return (
             <div className="duxtree-node">
-                { hasChildren &&
-                <div onClick={() => this.expandClicked(this.props.id)} className="duxtree-disclosure">{disclosure}</div>
+                { !hasChildren &&
+                <div className="duxtree-disclosure">&nbsp;</div>
                 }
+                { hasChildren &&
+                <div onClick={this.expandClicked} className="duxtree-disclosure">{disclosure}</div>
+                }
+                { this.props.checkable &&
                 <div onClick={() => this.props.checkClicked(this.props.id)} className="duxtree-checkbox">
                     {checkedComponent}
                 </div>
-                &nbsp;
-                {this.props.isLoading ? this.props.loadingMsg : this.props.label}
+                }
+                { this.props.icon &&
+                <div className="duxtree-icon" onClick={this.onClick}>{this.props.icon}</div>
+                }
+                <div className="duxtree-label" onClick={this.onClick}>
+                    {this.props.isLoading ? this.props.loadingMsg : label}
+                </div>
                 <div className="duxtree-node-children">
                     {this.props.isExpanded && this.props.children}
                 </div>
@@ -76,8 +97,9 @@ export default class DuxTreeNode extends React.Component {
 
 DuxTreeNode.propTypes = {
     id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.node]).isRequired,
     checkedState: PropTypes.string.isRequired,
+    checkable: PropTypes.bool.isRequired,
     isExpanded: PropTypes.bool.isRequired,
     defaultExpanded: PropTypes.bool,
     loadingMsg: PropTypes.string.isRequired,
@@ -86,6 +108,8 @@ DuxTreeNode.propTypes = {
     checkboxUnchecked: PropTypes.node,
     checkboxChecked: PropTypes.node,
     checkboxIndeterminate: PropTypes.node,
+
+    icon: PropTypes.node,
 
     disclosureExpand: PropTypes.node,
     disclosureCollapse: PropTypes.node,

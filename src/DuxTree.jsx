@@ -48,6 +48,11 @@ export default class DuxTree extends React.Component {
                 onCollapse = child.onCollapse;
             }
 
+            let checkable = this.props.checkable;
+            if (child.hasOwnProperty('checkable')) {
+                checkable = child.checkable;
+            }
+
             const defaultExpanded = child.hasOwnProperty('defaultExpanded') ? child.defaultExpanded : false;
 
             return (
@@ -60,6 +65,8 @@ export default class DuxTree extends React.Component {
                     isLoading={isNodeLoading(this.state.nodes, child.id)}
                     defaultExpanded={defaultExpanded}
                     loadingMsg={loadingMsg}
+                    checkable={checkable}
+                    icon={child.icon}
                     checkClicked={() => this.toggleNodeChecked(child.id)}
                     expandClicked={() => this.toggleNodeExpanded(child.id)}
                     checkboxUnchecked={this.props.checkboxUnchecked}
@@ -140,6 +147,7 @@ export default class DuxTree extends React.Component {
 
 DuxTree.propTypes = {
     data: PropTypes.array.isRequired,
+    checkable: PropTypes.bool.isRequired,
 
     // customize checkboxes
     checkboxUnchecked: PropTypes.node,
@@ -155,4 +163,8 @@ DuxTree.propTypes = {
     onCollapse: PropTypes.func,
     onSelectionChanged: PropTypes.func,
 
+};
+
+DuxTree.defaultProps = {
+    checkable: false
 };
