@@ -1,0 +1,45 @@
+<h2>Checkboxes</h2>
+
+<p>
+    Nodes can be rendered with checkboxes if the <code>checkable</code> property is true.  The default is false
+    and can be specified per node in the JavaScript array or for the entire tree for the <code>DuxTree</code>
+    component.  The <code>defaultChecked</code> property on a node specifies if the node should be checked when that
+    node is initialized.
+</p>
+
+<p>
+    For the purpose of this discussion a node is defined as an item with no children.  A folder is defined as an item
+    with children consisting of nodes and/or additional folders.  Nodes with checkboxes are bi-state,
+    either checked or unchecked.  Folders are tri-state: checked, unchecked, or indeterminate.  If a folder is checked,
+    that means all descendant nodes are also checked.  If a folder is unchecked, all descendant nodes are also
+    unchecked.  Indeterminate indicates some descendant nodes are checked, but not all.  If the user interacts with
+    the folder's checkbox, that changes the check state of all descendants.  If the folder is unchecked or
+    indeterminate, all descendant nodes are checked.  If the folder is checked, all descendant nodes are unchecked.
+</p>
+
+<h4>Checkbox Rendering</h4>
+
+<p>
+By default, <code>DuxTree</code> renders checkboxes using HTML <code>&lt;input&gt;</code> tags.  Of course, this
+affects appearance in different browsers.  If desired, you can specify a JSX component to use instead.  This is
+done with the <code>checkboxChecked</code>, <code>checkboxUnchecked</code>, and <code>checkboxIndeterminate</code>
+properties to <code>DuxTree</code>.  Here is an example using Google's Material Icons:
+</p>
+
+<pre>
+    &lt;DuxTree
+        data={treeData}
+        checkable={true}
+        checkboxUnchecked={&lt;i className="material-icons"&gt;check_box_outline_blank&lt;/i&gt;}
+        checkboxChecked={&lt;i className="material-icons-outlined"&gt;check_box&lt;/i&gt;}
+        checkboxIndeterminate={&lt;i className="material-icons-outlined"&gt;indeterminate_check_box&lt;/i&gt;}
+     /&gt;
+</pre>
+
+<h4>Examples</h4>
+
+<p>
+    Below are two example trees.  The first is rendered with the browser's <code>&lt;input&gt;</code> tags.  The
+    second tree is rendered using Google Material Icons.
+</p>
+

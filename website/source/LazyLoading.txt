@@ -1,0 +1,71 @@
+import React from 'react';
+import { DuxTree } from 'duxtree';
+import _ from 'lodash';
+
+export class LazyLoading extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            treeData: [
+                {
+                    id: 'folder1',
+                    label: 'Folder 1',
+                    onLoadChildren: this.loadChildren
+                },
+                {
+                    id: 'folder2',
+                    label: 'Folder 2',
+                    onLoadChildren: this.loadChildren
+                },
+                {
+                    id: 'folder3',
+                    label: 'Folder 3',
+                    onLoadChildren: this.loadChildren
+                },
+            ]
+        };
+    }
+
+    loadChildren = id => {
+        // Set the isLoading flag
+        const treeData = _.cloneDeep(this.state.treeData);
+        treeData.forEach(folder => {
+            if (folder.id === id) {
+                folder.isLoading = true;
+            }
+        });
+        this.setState({ treeData });
+
+        // Delay for a few seconds to simulate network request
+        setTimeout(() => {
+            let children = [];
+            for (let i = 1; i <= 5; i++) {
+                children.push({
+                    id: `${id} child${i}`,
+                    label: `${id} Child ${i}`
+                });
+            }
+            // clear the isLoading flag and populate the children array
+            treeData.forEach(folder => {
+                if (folder.id === id) {
+                    folder.isLoading = false;
+                    folder.children = children;
+                }
+            });
+            this.setState({ treeData });
+        }, 2000);
+    };
+
+    render() {
+        return (
+            <div style={{ height: '20em', width: '30ch', overflowY: 'auto' }}>
+                <DuxTree
+                    data={this.state.treeData}
+                    disclosureExpand={<i className="material-icons-outlined">arrow_right</i>}
+                    disclosureCollapse={<i className="material-icons-outlined">arrow_drop_down</i>}
+                />
+            </div>
+        );
+    }
+}

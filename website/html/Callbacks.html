@@ -1,0 +1,58 @@
+<h2>Callbacks</h2>
+
+<p>
+    <code>DuxTree</code> supports some optional callbacks at the tree level and the node level.
+</p>
+
+<h4>DuxTree Callbacks</h4>
+
+<p>
+    These callbacks are at the tree level so they are passed as properties to the <code>DuxTree</code> component.
+</p>
+
+<h5>onExpand</h5>
+
+<p>
+    This is called when a folder is expanded by the user.  The ID of the node is passed to the callback.
+    <strong>NOTE</strong>: if an onExpand callback is specified for the node, the tree-level callback is not called.
+</p>
+
+<h5>onCollapse</h5>
+
+<p>
+    This is called when a folder is collapsed by the user.  The ID of the code is passed to the callback.
+    <strong>NOTE</strong>: if an onCollapse callback is specified for the node, the tree-level callback is not called.
+</p>
+
+<h5>onSelectionChanged</h5>
+
+<p>
+    This is called when the user checks or un-checks a node or a folder of nodes.  An array of the selected IDs is
+    passed in.
+</p>
+
+<h4>Node Callbacks</h4>
+
+<p>
+    These callbacks are at the node level.  They are passed as properties of the node objects in the array
+    passed to the <code>data</code> property of the <code>DuxTree</code> component.
+</p>
+
+<h5>onExpand</h5>
+
+<p>
+    This is called when a folder is expanded by the user.  The ID of the node is passed to the callback.
+</p>
+
+<h5>onCollapse</h5>
+
+<p>
+    This is called when a folder is collapsed by the user.  The ID of the code is passed to the callback.
+</p>
+
+<h5>onLoadChildren</h5>
+
+<p>
+    This is called when a folder is expanded by the user.  The ID of the node is passed to the callback.
+    See the topic on Loading on Demand for more information.
+</p>

@@ -53,7 +53,7 @@ export default class DuxTree extends React.Component {
                 onCollapse = child.onCollapse;
             }
 
-            let onLoadChildren = this.props.onLoadChildren;
+            let onLoadChildren;
             if (child.hasOwnProperty('onLoadChildren')) {
                 onLoadChildren = child.onLoadChildren;
             }
@@ -173,7 +173,6 @@ DuxTree.propTypes = {
     onExpand: PropTypes.func,
     onCollapse: PropTypes.func,
     onSelectionChanged: PropTypes.func,
-    onLoadChildren: PropTypes.func,
 
 };
 

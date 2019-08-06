@@ -56,13 +56,13 @@ export default class DuxTreeNode extends React.Component {
                 if (this.props.disclosureCollapse) {
                     disclosure = this.props.disclosureCollapse;
                 } else {
-                    disclosure = <span>-</span>;
+                    disclosure = <span style={{ fontSize: 16, fontWeight: 'bold' }}>&minus;</span>;
                 }
             } else {
                 if (this.props.disclosureExpand) {
                     disclosure = this.props.disclosureExpand;
                 } else {
-                    disclosure = <span>+</span>;
+                    disclosure = <span style={{ fontSize: 16, fontWeight: 'bold' }}>+</span>;
                 }
             }
         }

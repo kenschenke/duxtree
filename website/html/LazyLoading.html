@@ -1,0 +1,18 @@
+<h2>Loading on Demand</h2>
+
+<p>
+    If a tree could potentially contain a large number of items and the user would likely only open a small number
+    of folders, the children of a node can be loaded on demand via a callback function.  The function is passed the
+    ID of the node.  It performs the necessary work to fetch and/or construct the child data then updates the array
+    passed to <code>DuxTree</code>.
+</p>
+
+<p>
+    A few properties in the data array control on-demand loading.  The <code>onLoadChildren</code> property specifies
+    the callback function.  The <code>loadingMsg</code> property contains a string or JSX component to display while
+    the data is being loaded.  The default is "Loading...".  The <code>isLoading</code> property is true while the
+    data is being loaded.
+</p>
+
+<h4>Example</h4>
+

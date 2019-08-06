@@ -1,0 +1,55 @@
+<h2>Populating a Tree</h2>
+
+<p>
+    Trees are populated by a JavaScript array supplied in the <code>data</code> property of the <code>DuxTree</code>
+    component. The array consists of objects representing each node in the tree. Because the tree is specified via a
+    property of <code>DuxTree</code>, modifying the array will modify the tree. Here is a simple two-node tree.
+</p>
+
+<pre>
+    const treeData = [
+       {
+          id: 'node1',
+          label: 'Title For Node 1'
+       },
+       {
+          id: 'node2',
+          label: 'Title for Node 2'
+       }
+    ];
+</pre>
+
+<p>
+    The <code>id</code> and <code>label</code> properties are required for every node.  The <code>id</code> must be
+    unique and can be a string or number.  The <code>label</code> can be a string, JSX tag, or a function.  The
+    section on customizing appearance goes into more detail on labels.
+</p>
+
+<h4>Node Children</h4>
+
+<p>
+    Nodes can have a <code>children</code> property that contains an array of child nodes.  Children can be
+    lazy-loaded via a callback.  See the section on loading on demand for details.  Here is an example of a node
+    with children. The <code>defaultExpanded</code> property controls whether or not a node's children are shown
+    when the tree is rendered. The default is <code>false</code>.
+</p>
+
+<pre>
+    const treeData = [
+       {
+          id: 'folder1',
+          label: 'Node With Children',
+          defaultExpanded: true,
+          children: [
+             {
+                id: 'child1',
+                label: 'Child 1 Title'
+             },
+             {
+                id: 'child2',
+                label: 'Child 2 Title'
+             }
+          ]
+       }
+    ];
+</pre>

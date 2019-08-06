@@ -1,0 +1,130 @@
+<h2>Customizing Appearance</h2>
+
+<p>
+    <code>DuxTree</code>'s appearance can be controlled in a few different ways.
+</p>
+
+<h4>Labels</h4>
+
+<p>
+    Item labels can be specified as a string, a JSX component, or a callback function.  For a callback function,
+    the node's ID is passed to the function.
+</p>
+
+<pre>
+    const treeData = [
+       {
+          id: 'node1',
+          // label is specified as a string
+          label: 'Label for Node 1'
+       },
+       {
+          id: 'node2',
+          // label is specified as a JSX component
+          label: &lt;span className="red-label"&gt;Label for Node 2&lt;/span&gt;
+       },
+       {
+          id: 'node3',
+          // label is specified as a callback function
+          label: id => `Label for ${id}`
+       }
+    ];
+</pre>
+
+<h4>Icons</h4>
+
+<p>
+    An item can have a custom icon, specified with the <code>icon</code> property.
+</p>
+
+<pre>
+    const treeData = [
+       {
+          id: 'folder1',
+          label: 'Folder 1',
+          icon: &lt;i className="material-icons-outlined"&gt;folder&lt;/i&gt;
+       }
+    ];
+</pre>
+
+<h4>Disclosure Controls</h4>
+<p>
+    You can specify the user controls to expand or collapse a folder.  The default is a plus or minus symbol.  The
+    controls are specified as properties of the <code>DuxTree</code> component as
+    <code>disclosureExpand</code> and <code>disclosureCollapse</code>.
+</p>
+
+<pre>
+    &lt;DuxTree
+       ...
+       disclosureExpand={&lt;i className="material-icons-outlined"&gt;arrow_right&lt;/i&gt;}
+       disclosureCollapse={&lt;i className="material-icons-outlined"&gt;arrow_drop_down&lt;/i&gt;}
+    /&gt;
+</pre>
+
+<h4>Custom Checkboxes</h4>
+
+<p>
+    You can specify user the controls for checkboxes.  The default is HTML <code>input</code> tags.  The controls
+    are specified as properties of the <code>DuxTree</code> component as <code>checkboxUnchecked</code>,
+    <code>checkboxChecked</code>, and <code>checkboxIndeterminate</code>.
+</p>
+
+<pre>
+    &lt;DuxTree
+       ...
+       checkboxUnchecked={&lt;i className="material-icons"&gt;check_box_outline_blank&lt;/i&gt;}
+       checkboxChecked={&lt;i className="material-icons-outlined"&gt;check_box&lt;/i&gt;}
+       checkboxIndeterminate={&lt;i className="material-icons-outlined"&gt;indeterminate_check_box&lt;/i&gt;}
+    /&gt;
+</pre>
+
+<h4>CSS</h4>
+
+<p>
+    DuxTree is rendered using CSS classes.  You can override the CSS to customize the tree appearance.  Following is a
+    list of the CSS classes.
+</p>
+
+<dl>
+    <dt>.duxtree</dt>
+    <dd>
+        The outer container for the entire tree.
+    </dd>
+
+    <dt>.duxtree-node</dt>
+    <dd>
+        The outer container for a tree node.
+    </dd>
+
+    <dt>.duxtree-node-children</dt>
+    <dd>
+        The container for a node's children.
+    </dd>
+
+    <dt>.duxtree-disclosure</dt>
+    <dd>
+        The container for a node's disclosure control to expand or collapse the children.
+    </dd>
+
+    <dt>.duxtree-checkbox</dt>
+    <dd>
+        The container for a node's checkbox.
+    </dd>
+
+    <dt>.duxtree-icon</dt>
+    <dd>
+        The container for a node's icon.
+    </dd>
+
+    <dt>.duxtree-label</dt>
+    <dd>
+        The container for a node's label.
+    </dd>
+
+    <dt>.duxtree-loadingmsg</dt>
+    <dd>
+        The container for the loading message used for dynamically loading children.
+    </dd>
+</dl>
+
