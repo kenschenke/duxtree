@@ -1,0 +1,10 @@
+/.idea
+/duxtree*.tgz
+/.babelrc
+.gitignore
+/src
+/node_modules
+__test__
+/testbed
+webpack.*.js
+/styles.css

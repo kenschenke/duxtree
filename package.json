@@ -3,18 +3,29 @@
   "version": "1.0.0",
   "description": "ReactJS tree component with custom rendering and dynamic loading",
   "main": "index.js",
+  "homepage": "http://www.duxtree.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kenschenke/duxtree"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "tree",
+    "checklist",
+    "duxtree"
+  ],
   "scripts": {
     "test": "jest",
     "testbed": "./node_modules/.bin/webpack-dev-server --env=testbed",
     "website": "./node_modules/.bin/webpack-dev-server --env=website",
     "website-dist": "./node_modules/.bin/webpack --env=website-dist",
-    "prepare": "npm run website-dist && babel ./src --out-dir ./lib --source-maps --presets env,stage-0,react --plugins babel-plugin-add-module-exports"
+    "prepare": "npm run website-dist && babel ./src --out-dir ./lib --source-maps --presets @babel/preset-env,@babel/preset-react --plugins babel-plugin-add-module-exports"
   },
   "author": "Ken Schenke",
   "license": "MIT",
   "peerDependencies": {
-    "lodash": "^4.17.14",
-    "uniqid": "^5.0.3"
+    "lodash": "^4.17.14"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
@@ -24,10 +35,13 @@
     "@babel/preset-react": "^7.0.0",
     "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.6",
+    "babel-plugin-add-module-exports": "^1.0.2",
     "copy-webpack-plugin": "^5.0.3",
     "css-loader": "^3.0.0",
     "jest": "^24.8.0",
     "lodash": "^4.17.14",
+    "mini-css-extract-plugin": "^0.8.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "raw-loader": "^3.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
