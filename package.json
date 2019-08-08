@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "ReactJS tree component with custom rendering and dynamic loading",
   "main": "index.js",
-  "homepage": "http://www.duxtree.com",
+  "homepage": "http://www.duxtree.org",
   "repository": {
     "type": "git",
     "url": "https://github.com/kenschenke/duxtree"
