@@ -8,6 +8,12 @@ branches:
 deploy:
   provider: pages
   local_dir: website/dist
+  file:
+    - bundle.js
+    - duxtree.css
+    - duxtree.png
+    - index.html
+    - styles.css
   fqdn: www.duxtree.org
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
