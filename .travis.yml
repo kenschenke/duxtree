@@ -7,10 +7,10 @@ branches:
     - stable
 deploy:
   provider: pages
-  local-dir: website/dist
+  local_dir: website/dist
   fqdn: www.duxtree.org
-  skip-cleanup: true
-  github-token: $GITHUB_TOKEN
-  keep-history: false
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  keep_history: false
   on:
     branch: stable
