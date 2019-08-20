@@ -8,7 +8,7 @@ module.exports = {
     entry: './website/index.jsx',
     mode: 'production',
     output: {
-        path: path.resolve(__dirname, 'website/dist'),
+        path: path.resolve(__dirname, './website/dist'),
         filename: 'bundle.js'
     },
     resolve: {
@@ -42,7 +42,7 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             "process.env": {
-                MODE_ENV: JSON.stringify("production")
+                NODE_ENV: JSON.stringify("production")
             }
         }),
         new MiniCssExtractPlugin({
