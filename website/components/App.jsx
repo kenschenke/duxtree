@@ -24,6 +24,8 @@ import LazyLoadingSource from '../source/LazyLoading.txt';
 
 import CallbacksHtml from '../html/Callbacks.html';
 
+import ReferenceHtml from '../html/Reference.html';
+
 const topics = [
     {
         topic: 'intro',
@@ -62,6 +64,10 @@ const topics = [
     {
         topic: 'callbacks',
         html: CallbacksHtml
+    },
+    {
+        topic: 'reference',
+        html: ReferenceHtml
     }
 ];
 

@@ -63,6 +63,20 @@ export default class DuxTree extends React.Component {
                 checkable = child.checkable;
             }
 
+            if (child.hasOwnProperty('show')) {
+                if (typeof child.show === 'function') {
+                    if (!child.show(child.id)) {
+                        return null;
+                    }
+                } else if (typeof child.show === 'boolean') {
+                    if (!child.show) {
+                        return null;
+                    }
+                } else {
+                    console.error('Expected duxtree node \'show\' property to be boolean or function');
+                }
+            }
+
             const defaultExpanded = child.hasOwnProperty('defaultExpanded') ? child.defaultExpanded : false;
 
             return (

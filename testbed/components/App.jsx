@@ -24,7 +24,13 @@ export class App extends React.Component {
                                 },
                                 {
                                     id: 'item13',
-                                    label: 'Item 13'
+                                    label: 'Item 13',
+                                    show: true
+                                },
+                                {
+                                    id: 'item14',
+                                    label: 'Item 14 (hidden)',
+                                    show: id => id !== 'item14'
                                 }
                             ]
                         },

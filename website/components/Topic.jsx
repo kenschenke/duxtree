@@ -31,7 +31,7 @@ export const Topic = props => {
             }
             <div id="footer" className="row mt-3">
                 <div className="col">
-                    <small>Copyright 2019 by Ken Schenke</small>
+                    <small>Copyright 2019-2020 by Ken Schenke</small>
                 </div>
             </div>
         </div>

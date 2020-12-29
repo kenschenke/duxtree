@@ -1,0 +1,186 @@
+<h2>Reference</h2>
+
+<p>
+    Below is a list of every <code>&lt;DuxTree&gt;</code> property as well as a list of the array
+    properties for the <code>data</code> property.
+</p>
+
+<table class="table">
+    <thead>
+    <tr>
+        <td>Property</td>
+        <th width="150">Default Value</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>data</td>
+        <td>(none)</td>
+        <td>
+            The contents of the tree. See <code>Populating a Tree</code> for more information. A reference
+            for the array is at the end of this page.
+        </td>
+    </tr>
+    <tr>
+        <td>checkable</td>
+        <td>false</td>
+        <td>
+            If true, checkboxes are shown with every node in the tree.
+        </td>
+    </tr>
+    <tr>
+        <td>checkboxUnchecked</td>
+        <td>(none)</td>
+        <td>
+            This can be used to customize the appearance of checkboxes in the unchecked state.
+            See the page on <code>Customizing Appearance</code> for more information.
+        </td>
+    </tr>
+    <tr>
+        <td>checkboxChecked</td>
+        <td>(none)</td>
+        <td>
+            This can be used to customize the appearance of checkboxes in the checked state.
+            See the page on <code>Customizing Appearance</code> for more information.
+        </td>
+    </tr>
+    <tr>
+        <td>checkboxIndeterminate</td>
+        <td>(none)</td>
+        <td>
+            This can be used to customize the appearance of checkboxes in the indeterminate state.
+            See the page on <code>Customizing Appearance</code> for more information.
+        </td>
+    </tr>
+    <tr>
+        <td>disclosureExpand</td>
+        <td>(plus sign)</td>
+        <td>
+            This defines an optional React component to render to expand a folder. See the page on
+            <code>Customizing Appearance</code> for more information.
+        </td>
+    </tr>
+    <tr>
+        <td>disclosureCollapse</td>
+        <td>(minus sign)</td>
+        <td>
+            This defines an optional React component to render to collapse a folder. See the page on
+            <code>Customizing Appearance</code> for more information.
+        </td>
+    </tr>
+    <tr>
+        <td>onExpand</td>
+        <td>(none)</td>
+        <td>
+            This is an optional callback that is called whenever a user expands any folder in the tree.
+            See the page on <code>Callbacks</code> for more information.
+        </td>
+    </tr>
+    <tr>
+        <td>onCollapse</td>
+        <td>(none)</td>
+        <td>
+            This is an optional callback that is called whenever a user collapses any folder in the tree.
+            See the page on <code>Callbacks</code> for more information.
+        </td>
+    </tr>
+    <tr>
+        <td>onSelectionChanged</td>
+        <td>(none)</td>
+        <td>
+            This is an optional callback that is called whenever a user checks or unchecks any node in the tree.
+            See the page on <code>Callbacks</code> for more information.
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Tree Node Properties</h3>
+
+<p>
+    Tree data is defined as JavaScript arrays. See the page on <code>Populating a Tree</code> for more
+    information. Below are all possible values for each node in the tree.
+</p>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Property</th>
+        <th width="150">Default Value</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>id</td>
+        <td>(none)</td>
+        <td>
+            This property uniquely identifies each node in the tree. It must be unique across all nodes.
+        </td>
+    </tr>
+    <tr>
+        <td>label</td>
+        <td>(none)</td>
+        <td>
+            This is the label shown to the user. It can be plain text, a React component, or a function.
+            If a function, the node's id is passed to the function which can return plain text or a
+            React component. See the page on <code>Customizing Appearance</code> for more information.
+        </td>
+    </tr>
+    <tr>
+        <td>icon</td>
+        <td>(none)</td>
+        <td>
+            This defines an optional icon for this node. This is a React component to render. See the page
+            on <code>Customizing Appearance</code> for more information.
+        </td>
+    </tr>
+    <tr>
+        <td>show</td>
+        <td>true</td>
+        <td>
+            If true, the node is rendered in the tree. This can be a boolean value or a function. The function
+            is passed the ID of the node and must return true or false.
+        </td>
+    </tr>
+    <tr>
+        <td>children</td>
+        <td>(none)</td>
+        <td>
+            If present, this is an array of children for this node.
+        </td>
+    </tr>
+    <tr>
+        <td>defaultExpanded</td>
+        <td>false</td>
+        <td>
+            If true, the node's children are shown when the it is first rendered.
+        </td>
+    </tr>
+    <tr>
+        <td>onExpand</td>
+        <td>(none)</td>
+        <td>
+            This is called when a folder is expanded by the user. See the page on
+            <code>Callbacks</code> for more information.
+        </td>
+    </tr>
+    <tr>
+        <td>onCollapse</td>
+        <td>(none)</td>
+        <td>
+            This is called when a folder is collapsed by the user. See the page on
+            <code>Callbacks</code> for more information.
+        </td>
+    </tr>
+    <tr>
+        <td>onLoadChildren</td>
+        <td>(none)</td>
+        <td>
+            This is called when a folder is expanded by the user. See the page on
+            <code>Loading on Demand</code> for more information.
+        </td>
+    </tr>
+    </tbody>
+</table>

@@ -30,6 +30,7 @@ export const NavBar = props => {
                             <a href="#" className="dropdown-item" onClick={e => {e.preventDefault(); props.topicClicked('custom')}}>Customizing Appearance</a>
                             <a href="#" className="dropdown-item" onClick={e => {e.preventDefault(); props.topicClicked('lazyloading')}}>Loading on Demand</a>
                             <a href="#" className="dropdown-item" onClick={e => {e.preventDefault(); props.topicClicked('callbacks')}}>Callbacks</a>
+                            <a href="#" className="dropdown-item" onClick={e => {e.preventDefault(); props.topicClicked('reference')}}>Reference</a>
                         </div>
                     </li>
                 </ul>
