@@ -1,6 +1,6 @@
 {
   "name": "duxtree",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ReactJS tree component with custom rendering and dynamic loading",
   "main": "index.js",
   "homepage": "http://www.duxtree.org",
