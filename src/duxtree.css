@@ -36,6 +36,17 @@
     margin-left: 5px;
 }
 
+/* Internet Explorer workaround for 'ch' differences */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .duxtree-checkbox {
+        width: 3.5ch;
+    }
+
+    .duxtree-icon {
+        width: 3.5ch;
+    }
+}
+
 .duxtree-label {
     display: inline-block;
     margin-left: 5px;
