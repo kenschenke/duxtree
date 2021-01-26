@@ -13,7 +13,7 @@
 .duxtree-disclosure {
     margin-right: 5px;
     cursor: default;
-    width: 2ch;
+    width: 2.5ch;
     display: inline-block;
     text-align: center;
     vertical-align: middle;
@@ -44,6 +44,10 @@
 
     .duxtree-icon {
         width: 3.5ch;
+    }
+
+    .duxtree-disclosure {
+        width: 3ch;
     }
 }
 
